@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+</head>
+<body>
+    <h1>URL-Shortner</h1>
+
+    <div>
+        <!-- <% if(locals.id){ %>  -->
+        <!--   <p>URL Generated: http://localhost:1500/url/<%= id %></p>  -->
+        <!-- <% } %>  -->
+    </div>
+
+   <form method="POST" action="/url">
+        <label>Enter Original URL here</label>
+        <input type="text" name="url" placeholder="http://example.com"> 
+
+        <!-- name="url"  is IMP bcoz this name will pass to the backend 
+         then it is accessed by 'req.body.url' -->
+
+        <button type="submit">Generate</button>
+    </form>
+
+    <div>
+        <% if(locals.urls) { %>
+            <table>
+                <tr>
+                    <th>Sr.no</th>
+                    <th>Original URL</th>
+                    <th>ShortID</th>
+                    <th>Clicks</th>
+                </tr>
+                <% urls.forEach((url, i) => { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= url.originalUrl %></td>
+                        <td>http://localhost:1500/url/<%= url.shortId %></td>
+                        <td><%= url.clicks %></td>
+                    </tr>
+                <% }) %>
+            </table>
+        <% } %>
+    </div>
+</body>
+</html>
