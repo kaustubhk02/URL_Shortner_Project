@@ -1,4 +1,5 @@
-const {getUser} = require('../services/auth');
+// const {getUser} = require('../services/authStateFull');
+const {getUser} = require('../services/authStateLess');
 
 async function restrictLoggedInUser(req, res, next){
 
@@ -43,6 +44,7 @@ This is a common practice in Express authentication systems because it makes the
 async function checkAuth(req, res, next){
 
     const userId = req.cookies.loginUid;
+    // if(!userId) res.render('home');
 
     const user = getUser(userId);
     console.log(user);

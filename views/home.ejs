@@ -15,8 +15,8 @@
     </div>
 
    <form method="POST" action="/url">
-        <label>Enter Original URL here</label>
-        <input type="text" name="url" placeholder="http://example.com"> 
+        <label for="url" >Enter Original URL here</label>
+        <input id="url" type="text" name="url" placeholder="http://example.com"> 
 
         <!-- name="url"  is IMP bcoz this name will pass to the backend 
          then it is accessed by 'req.body.url' -->

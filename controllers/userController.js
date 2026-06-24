@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const { v4: uuidv4 } = require('uuid');
-const {setUser, getUser} = require('../services/auth');
+// const {setUser, getUser} = require('../services/authStateFull');
+const {setUser, getUser} = require('../services/authStateLess');
 
 async function handleUserCreation(req, res){
 
@@ -28,10 +29,15 @@ async function handleUserLogin(req, res){
         console.log("Invalid user");
         return res.render('login');
     }
+    /* STATEFUL AUTHENTICATION */
+    // const sessionId = uuidv4();
+    // setUser(sessionId, user);
+    // res.cookie("loginUid", sessionId);
 
-    const sessionId = uuidv4();
-    setUser(sessionId, user);
-    res.cookie("loginUid", sessionId);
+    /* STATELESS AUTHENTICATION */
+    const token = setUser(user);
+    console.log(token);
+    res.cookie("loginUid", token);
     
     console.log("Valid user");
     return res.redirect('/');
