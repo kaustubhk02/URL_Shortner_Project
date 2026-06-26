@@ -35,12 +35,20 @@ async function handleUserLogin(req, res){
     // res.cookie("loginUid", sessionId);
 
     /* STATELESS AUTHENTICATION */
+    /* With COOKIES */
+    // const token = setUser(user);
+    // console.log(token);
+    // res.cookie("loginUid", token);
+    
+    // console.log("Valid user");
+    // return res.redirect('/');
+
+    /* WithOut Cookies and with Headers */
     const token = setUser(user);
     console.log(token);
-    res.cookie("loginUid", token);
     
     console.log("Valid user");
-    return res.redirect('/');
+    return res.json({token});
 }
 
 module.exports = {
