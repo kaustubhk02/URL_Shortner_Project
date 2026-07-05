@@ -7,8 +7,9 @@ const { connectMongoDB } = require("./connectDB");
 const urlRoute = require("./routes/urlRoute");
 const staticURL = require("./routes/staticRoute");
 const userRoute = require("./routes/userRoute");
-const {restrictLoggedInUser, checkAuth} = require('./middlewares/authCookies');
+// const {restrictLoggedInUser, checkAuth} = require('./middlewares/authCookies');
 // const {restrictLoggedInUser, checkAuth} = require('./middlewares/authHeaders');
+const {checkForAuthentication, restrictTo} = require('./middlewares/authHeaders');
 
 const app = express();
 const PORT = 1500;
@@ -28,12 +29,15 @@ app.set("views", path.resolve('./views'));  // this tells the server that all vi
 app.use(express.json()); // When a user sends JSON data to your server, express.json() converts it into a JavaScript object so you can use it through req.body. 
 app.use(express.urlencoded({extended:false})); // when sent data is 'form-data'
 app.use(cookieParser()); 
+app.use(checkForAuthentication); // This middleware checks the user's authentication status for every incoming request.
 
 
-app.use("/url", restrictLoggedInUser, urlRoute);
+// app.use("/url", restrictLoggedInUser, urlRoute);
 // Middleware --> 'restrictLoggedInUser' is added in between for authentication (cookie-check for logged-in user)
 // (e.g., by verifying a session cookie or JWT) before allowing access to urlRoute.
-app.use("/", checkAuth, staticURL);
+app.use("/url", restrictTo("NORMAL"), urlRoute);
+// app.use("/", checkAuth, staticURL); // checkAuth was verifing whether the user is logged in and attaches the user to req.user if authenticated.
+app.use("/", staticURL);
 app.use("/user", userRoute);
 
 app.listen(PORT, () => {

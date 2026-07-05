@@ -2,11 +2,21 @@ const express = require('express');
 const router = express.Router();
 const URL = require('../models/urlModel');
 
+const {restrictTo} = require('../middlewares/authHeaders');
+
+// restrictTo('NORMAL') is an Inline Middleware, that protects this route based on the user's role.
+// router.get('/', restrictTo('NORMAL'), async (req,res)=>{ ... }
+
 router.get('/', async (req,res)=>{
+
+    // If the user is not authenticated, render the home page.
     if(!req.user) return res.render('home');
+
+    // If the user is authenticated but does not have the required role, send an "Unauthorized User" response.
+    if(req.user.role !== "NORMAL") return res.send('UnAuthorised User');
     const allurls = await URL.find({createdBy: req.user._id});
     res.render('home', {
-        urls: allurls, // passing this can be used in home.ejs for further operations
+        urls: allurls, // Pass all user's URLs to home.ejs for rendering.
     });
 });
 
