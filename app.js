@@ -25,17 +25,15 @@ connectMongoDB("mongodb://127.0.0.1:27017/shortUrlDB")
 app.set("view engine", "ejs"); // this tells the server thatt which templating engine we are using.
 app.set("views", path.resolve('./views'));  // this tells the server that all views are present at the path provided.
 
-
 app.use(express.json()); // When a user sends JSON data to your server, express.json() converts it into a JavaScript object so you can use it through req.body. 
 app.use(express.urlencoded({extended:false})); // when sent data is 'form-data'
 app.use(cookieParser()); 
 app.use(checkForAuthentication); // This middleware checks the user's authentication status for every incoming request.
 
-
 // app.use("/url", restrictLoggedInUser, urlRoute);
 // Middleware --> 'restrictLoggedInUser' is added in between for authentication (cookie-check for logged-in user)
 // (e.g., by verifying a session cookie or JWT) before allowing access to urlRoute.
-app.use("/url", restrictTo("NORMAL"), urlRoute);
+app.use("/url", restrictTo(["NORMAL", "ADMIN"]), urlRoute);
 // app.use("/", checkAuth, staticURL); // checkAuth was verifing whether the user is logged in and attaches the user to req.user if authenticated.
 app.use("/", staticURL);
 app.use("/user", userRoute);

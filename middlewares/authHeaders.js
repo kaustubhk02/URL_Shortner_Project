@@ -33,7 +33,7 @@ async function checkForAuthentication(req, res, next){
 function restrictTo(roles = []){ // Restricts users from accessing resources that are not permitted for their role.
     return function (req, res, next){
         if(!req.user) return res.redirect('/login');
-        if(!roles.include(req.user.role)) return res.send('UnAuthorised User');
+        if(!roles.includes(req.user.role)) return res.send('UnAuthorised User');
         return next();
     };
 }
